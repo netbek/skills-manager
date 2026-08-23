@@ -19,42 +19,48 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
 ## Configure
 
-Run `skills-sync config > skills.conf` to write a starter config to your repo root:
+1. Run `skills-sync config > skills.conf` to write a starter config to your repo root:
 
-```shell
-agents: opencode claude-code      # passed to the skills CLI as -a flags
-skills-dir: .agents/skills        # repeatable; CLI-filled directories this tool prunes
-links-dir: .claude/skills         # repeatable; link directories this tool maintains
+    ```shell
+    agents: opencode claude-code      # passed to the skills CLI as -a flags
+    skills-dir: .agents/skills        # repeatable; CLI-filled directories this tool prunes
+    links-dir: .claude/skills         # repeatable; link directories this tool maintains
 
-owner/repo [#ref] skill ...       # third-party entries; '#' starts a comment
-```
+    owner/repo [#ref] skill ...       # third-party entries; '#' starts a comment
+    ```
 
-Rules:
+    Rules:
 
-- At least one `skills-dir` is required. It anchors first-party detection: a skill directory that
-  is committed (not git-ignored) is never overwritten or removed.
-- `skills-dir` entries are swept for git-ignored skills absent from the config; those are removed.
-- `links-dir` entries hold links into the first `skills-dir`. Dangling links are pruned; excess
-  git-ignored links are pruned; every first-party skill gets a refreshed link in each directory,
-  whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
-  too.
+    * At least one `skills-dir` is required. It anchors first-party detection: a skill directory that
+      is committed (not git-ignored) is never overwritten or removed.
+    * `skills-dir` entries are swept for git-ignored skills absent from the config; those are removed.
+    * `links-dir` entries hold links into the first `skills-dir`. Dangling links are pruned; excess
+      git-ignored links are pruned; every first-party skill gets a refreshed link in each directory,
+      whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
+      too.
 
-Configure `.gitignore`:
+2. **Optional:** Disable [`skills` CLI telemetry](https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#telemetry) in your environment.
 
-```gitignore
-# Generated state
-.skills.checksum
-skills-lock.json
+3. Run `skills-sync install` to install the skills listed in `skills.conf`.
 
-# Third-party agent skills are ignored
-.agents/skills/*
+4. Configure `.gitignore`:
 
-# First-party agent skills are un-ignored and committed. Uncomment one line per skill:
-# !.agents/skills/my-skill/
+    ```gitignore
+    # Generated state
+    .skills.checksum
+    skills-lock.json
 
-# Generated links are ignored
-.claude/skills/*
-```
+    # Third-party agent skills are ignored
+    .agents/skills/*
+
+    # First-party agent skills are un-ignored and committed. Uncomment one line per skill:
+    # !.agents/skills/my-skill/
+
+    # Generated links are ignored
+    .claude/skills/*
+    ```
+
+5. **Optional:** Run `skills-sync agents-md > AGENTS.md` to write an `AGENTS.md` to your repo root.
 
 ## Commands
 
@@ -65,7 +71,7 @@ skills-lock.json
 | `uninstall`  | Remove all git-ignored skills and generated state              |
 | `agents-md`  | Print a markdown catalog of installed skills for `AGENTS.md`   |
 
-### config
+### `skills-sync config`
 
 ```shell
 skills-sync config
@@ -74,7 +80,7 @@ skills-sync config
 Print a starter `skills.conf` to stdout. Redirect it into a file, e.g. `skills-sync config >
 skills.conf`.
 
-### install
+### `skills-sync install`
 
 ```shell
 skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
@@ -85,7 +91,7 @@ hashes in `.skills.checksum` (config bytes, first-party skill names) match and t
 exist. `--force` reinstalls.
 Safe to run on shell entry: without `node_modules` or a network it warns and exits 0.
 
-### uninstall
+### `skills-sync uninstall`
 
 ```shell
 skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
@@ -94,7 +100,7 @@ skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
 Remove every git-ignored skill, its links, `.skills.checksum`, and `skills-lock.json`. First-party
 skills survive. Refuses to act outside a git work tree, where first-party detection fails.
 
-### agents-md
+### `skills-sync agents-md`
 
 ```shell
 skills-sync agents-md [--config FILE] [--root DIR]
