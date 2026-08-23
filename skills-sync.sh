@@ -252,6 +252,35 @@ has_skills() {
     return 1
 }
 
+# Print the name of the first skill under $1: the frontmatter name of its first SKILL.md in glob
+# order, else the folder basename.
+first_skill_name() {
+    local f
+    for f in "$1"/*/SKILL.md; do
+        [ -f "$f" ] || continue
+        awk -v base="$(basename "${f%/SKILL.md}")" '
+            NR == 1 && /^---\r?$/ { fm = 1; next }
+            !fm { exit }
+            /^---\r?$/ || /^\.\.\.\r?$/ { exit }
+            {
+                sub(/\r$/, "")
+                if ($0 ~ /^name:/) {
+                    n = $0
+                    sub(/^name:[ \t]*/, "", n)
+                    gsub(/^"/, "", n)
+                    gsub(/"[ \t]*$/, "", n)
+                }
+            }
+            END {
+                sub(/[ \t]+$/, "", n)
+                if (n == "") n = base
+                print n
+            }
+        ' "$f"
+        return
+    done
+}
+
 # Emit a markdown table row per skill folder under $1 holding a SKILL.md: name and description
 # parsed from the YAML frontmatter, path relative to the repo root. The folder name stands in for
 # a missing name; multiline descriptions fold onto one line; pipes are escaped.
@@ -312,8 +341,8 @@ EOF
         dir="node_modules/$pkg/skills"
         has_skills "$dir" || continue
         printf '\n## Package skills: %s\n\n' "$pkg"
-        fill '{PACKAGE_NAME}' "$pkg" <<'EOF'
-The `{PACKAGE_NAME}` package ships skills under `node_modules/{PACKAGE_NAME}/skills/`. Use the `read` tool to load `SKILL.md` files directly (e.g., `read node_modules/{PACKAGE_NAME}/skills/<skill>/SKILL.md`).
+        fill '{PACKAGE_NAME}' "$pkg" <<'EOF' | fill '{SKILL}' "$(first_skill_name "$dir")"
+The `{PACKAGE_NAME}` package ships skills under `node_modules/{PACKAGE_NAME}/skills/`. Use the `read` tool to load `SKILL.md` files directly (e.g., `read node_modules/{PACKAGE_NAME}/skills/{SKILL}/SKILL.md`).
 EOF
         printf '\n'
         emit_skills_table "$dir"
@@ -321,6 +350,8 @@ EOF
 }
 
 if [ "$action" = agents-md ]; then
+    # Pin collation, so glob-expanded skill tables render identically on every machine.
+    export LC_ALL=C
     render_agents_md
     exit 0
 fi
