@@ -1,5 +1,5 @@
 {
-  "name": "skills-sync",
+  "name": "@netbek/skills-sync",
   "version": "0.0.1",
   "description": "Install and uninstall third-party agent skills declared in a repo's skills.conf",
   "author": {
