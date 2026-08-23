@@ -14,7 +14,7 @@ gone from the list. If nothing changed, it does nothing.
 Add the package as a dev dependency:
 
 ```shell
-pnpm add -D skills-sync          # or: npm i -D / yarn add -D
+pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 ```
 
 ## Configure
