@@ -4,7 +4,8 @@ set -euo pipefail
 usage() {
     echo "usage: skills-sync init [--force] [--config FILE] [--root DIR]
        skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
-       skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]" >&2
+       skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
+       skills-sync agents-md [--config FILE] [--root DIR]" >&2
 }
 
 action=
@@ -14,7 +15,7 @@ opt_root=
 opt_checksum=
 while [ $# -gt 0 ]; do
     case $1 in
-        init | install | uninstall)
+        init | install | uninstall | agents-md)
             if [ -n "$action" ]; then
                 usage
                 exit 1
@@ -54,7 +55,7 @@ while [ $# -gt 0 ]; do
     shift
 done
 case $action in
-    init | install | uninstall) ;;
+    init | install | uninstall | agents-md) ;;
     *)
         usage
         exit 1
@@ -224,6 +225,105 @@ prune_skill_dirs() {
         done
     done
 }
+
+# Print stdin with every occurrence of $1 replaced by $2.
+fill() {
+    local from=$1 to=$2 body
+    body=$(cat)
+    printf '%s\n' "${body//$from/$to}"
+}
+
+# Print names of direct node_modules dependencies shipping a skills directory, sorted. Scoped
+# packages sit one level deeper; globs skip dot-directories like .pnpm.
+discover_packages() {
+    local entry
+    for entry in node_modules/* node_modules/@*/*; do
+        [ -d "$entry/skills" ] || continue
+        printf '%s\n' "${entry#node_modules/}"
+    done | LC_ALL=C sort -u
+}
+
+# True when $1 holds at least one skill folder with a SKILL.md.
+has_skills() {
+    local f
+    for f in "$1"/*/SKILL.md; do
+        [ -f "$f" ] && return 0
+    done
+    return 1
+}
+
+# Emit a markdown table row per skill folder under $1 holding a SKILL.md: name and description
+# parsed from the YAML frontmatter, path relative to the repo root. The folder name stands in for
+# a missing name; multiline descriptions fold onto one line; pipes are escaped.
+emit_skills_table() {
+    local dir=$1 f
+    printf '| Skill | Path | Description |\n'
+    printf '|-------|------|-------------|\n'
+    for f in "$dir"/*/SKILL.md; do
+        [ -f "$f" ] || continue
+        awk -v path="${f%/SKILL.md}" -v base="$(basename "${f%/SKILL.md}")" '
+            NR == 1 && /^---\r?$/ { fm = 1; next }
+            !fm { exit }
+            /^---\r?$/ || /^\.\.\.\r?$/ { exit }
+            {
+                sub(/\r$/, "")
+                if ($0 ~ /^name:/) {
+                    n = $0
+                    sub(/^name:[ \t]*/, "", n)
+                    gsub(/^"/, "", n)
+                    gsub(/"[ \t]*$/, "", n)
+                } else if ($0 ~ /^description:/) {
+                    d = $0
+                    sub(/^description:[ \t]*([>|][+-]?)?[ \t]*/, "", d)
+                    collecting = 1
+                } else if (collecting && /^[ \t]/) {
+                    sub(/^[ \t]+/, "")
+                    d = (d == "" ? $0 : d " " $0)
+                } else {
+                    collecting = 0
+                }
+            }
+            END {
+                sub(/[ \t]+$/, "", n)
+                sub(/[ \t]+$/, "", d)
+                if (n == "") n = base
+                gsub(/\|/, "\\|", d)
+                printf "| `%s` | `%s` | %s |\n", n, path, d
+            }
+        ' "$f"
+    done
+}
+
+# Render the AGENTS.md skill catalog to stdout: fixed prose around a table of first-party skills,
+# then one section per package that ships skills under node_modules.
+render_agents_md() {
+    local pkg dir
+    printf '# AGENTS.md\n\n'
+    printf '## Project skills\n\n'
+    fill '{SKILLS_DIR}' "$skills_dir" <<'EOF'
+Load any skill below with the `skill` tool by name (e.g., `skill find-skills`), or read its `SKILL.md` directly (e.g., `read {SKILLS_DIR}/find-skills/SKILL.md`). If `{SKILLS_DIR}/` is empty, run `pnpm exec skills-sync install` to populate it (see [skills-sync docs](https://github.com/netbek/skills-sync)).
+EOF
+    if has_skills "$skills_dir"; then
+        printf '\n'
+        emit_skills_table "$skills_dir"
+    fi
+    while IFS= read -r pkg; do
+        [ -n "$pkg" ] || continue
+        dir="node_modules/$pkg/skills"
+        has_skills "$dir" || continue
+        printf '\n## Package skills: %s\n\n' "$pkg"
+        fill '{PACKAGE_NAME}' "$pkg" <<'EOF'
+The `{PACKAGE_NAME}` package ships skills under `node_modules/{PACKAGE_NAME}/skills/`. Use the `read` tool to load `SKILL.md` files directly (e.g., `read node_modules/{PACKAGE_NAME}/skills/<skill>/SKILL.md`).
+EOF
+        printf '\n'
+        emit_skills_table "$dir"
+    done < <(discover_packages)
+}
+
+if [ "$action" = agents-md ]; then
+    render_agents_md
+    exit 0
+fi
 
 if [ "$action" = uninstall ]; then
     # git check-ignore tells first-party from installed skills; needs a work tree. Without one,
