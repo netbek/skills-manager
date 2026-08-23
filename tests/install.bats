@@ -2,7 +2,7 @@
 # skills-sync install: CLI invocation shape, checksum-driven idempotence,
 # first-party handling and pruning.
 
-load 'helpers'
+load 'helpers.sh'
 
 setup() {
     setup_sandbox

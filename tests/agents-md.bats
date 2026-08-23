@@ -2,7 +2,7 @@
 # skills-sync agents-md: renders the AGENTS.md catalog from the first skills-dir
 # and node_modules packages shipping skills. Needs a config but no git repo.
 
-load 'helpers'
+load 'helpers.sh'
 
 setup() {
     setup_sandbox

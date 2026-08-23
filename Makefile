@@ -13,7 +13,7 @@ endif
 # ==============================================================================
 
 lint:
-	@shellcheck skills-sync.sh tests/helpers.bash
+	@shellcheck skills-sync.sh tests/helpers.sh
 
 test:
 	@pnpm exec bats tests

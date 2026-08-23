@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # skills-sync config: prints a starter config to stdout.
 
-load 'helpers'
+load 'helpers.sh'
 
 setup() {
     setup_sandbox

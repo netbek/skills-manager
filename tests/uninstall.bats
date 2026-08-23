@@ -2,7 +2,7 @@
 # skills-sync uninstall: sweeps ignored skills and links, spares committed ones,
 # drops checksum and lock state.
 
-load 'helpers'
+load 'helpers.sh'
 
 setup() {
     setup_sandbox

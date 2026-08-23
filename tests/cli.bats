@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # Argument-parsing behavior shared by all four commands.
 
-load 'helpers'
+load 'helpers.sh'
 
 setup() {
     setup_sandbox

@@ -12,7 +12,7 @@
     "skills-sync": "skills-sync.sh"
   },
   "scripts": {
-    "lint": "shellcheck skills-sync.sh tests/helpers.bash",
+    "lint": "shellcheck skills-sync.sh tests/helpers.sh",
     "test": "bats tests"
   },
   "dependencies": {

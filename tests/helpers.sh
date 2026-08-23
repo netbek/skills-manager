@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Shared fixtures and assertions for the skills-sync bats suite.
 #
 # Every test runs skills-sync inside a throwaway sandbox created outside any git

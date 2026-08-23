@@ -5,22 +5,28 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  test:
+  ci:
+    name: Lint and test
     runs-on: ubuntu-latest
-    permissions: {}
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
+      # Installs node, pnpm and shellcheck pinned in mise.toml.
       - uses: jdx/mise-action@v2
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: shellcheck skills-sync.sh tests/helpers.bash
+        run: shellcheck skills-sync.sh tests/helpers.sh
 
       - name: Test
         run: pnpm exec bats tests
