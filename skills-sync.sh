@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    echo "usage: skills-sync init [--force] [--config FILE] [--root DIR]
+    echo "usage: skills-sync config
        skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
        skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
        skills-sync agents-md [--config FILE] [--root DIR]" >&2
@@ -15,7 +15,7 @@ opt_root=
 opt_checksum=
 while [ $# -gt 0 ]; do
     case $1 in
-        init | install | uninstall | agents-md)
+        config | install | uninstall | agents-md)
             if [ -n "$action" ]; then
                 usage
                 exit 1
@@ -55,7 +55,7 @@ while [ $# -gt 0 ]; do
     shift
 done
 case $action in
-    init | install | uninstall | agents-md) ;;
+    config | install | uninstall | agents-md) ;;
     *)
         usage
         exit 1
@@ -104,19 +104,27 @@ cd "$root_dir"
 
 config_file=${opt_config:-skills.conf}
 
-# init stops here: it only seeds the config, so the missing-config error below never applies to it.
-if [ "$action" = init ]; then
-    example_dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
-    if [ ! -f "$example_dir/skills.conf.example" ]; then
-        echo "error: no skills.conf.example beside $example_dir/skills-sync.sh" >&2
-        exit 1
-    fi
-    if [ -e "$config_file" ] && [ "$force" -eq 0 ]; then
-        echo "error: $root_dir/$config_file exists; use --force to overwrite" >&2
-        exit 1
-    fi
-    cp "$example_dir/skills.conf.example" "$config_file"
-    echo "created $root_dir/$config_file"
+# config stops here: it only prints a starter config, so the missing-config error below never
+# applies to it.
+if [ "$action" = config ]; then
+    cat <<'EOF'
+# Docs: https://github.com/netbek/skills-sync
+
+# Agents receiving installs; each name is passed to the skills CLI as an -a flag:
+agents: opencode claude-code
+
+# Directories the CLI fills with skill folders. Repeatable. At least one is required; git-ignored
+# entries absent from the list below are pruned:
+skills-dir: .agents/skills
+
+# Directories of links into the first skills-dir. Repeatable. Dangling or excess git-ignored
+# entries are pruned; committed first-party skills get refreshed links here:
+links-dir: .claude/skills
+
+# Third-party skills, one entry per line: <owner/repo> [#ref] <skill ...>
+# At least one skill name is required; '#' starts a comment.
+vercel-labs/skills find-skills
+EOF
     exit 0
 fi
 
