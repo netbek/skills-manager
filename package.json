@@ -8,11 +8,13 @@
     "url": "http://netbek.co.za"
   },
   "license": "AGPL-3.0",
-  "private": "true",
   "bin": {
     "skills-sync": "skills-sync.sh"
   },
   "dependencies": {
     "skills": "^1.5.22"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^23.0.2"
   }
 }

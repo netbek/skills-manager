@@ -14,4 +14,12 @@ _.path = ["{{config_root}}/node_modules/.bin"]
 [hooks.enter]
 run = """
 mise install --quiet
+mise run pnpm-install
 """
+
+[tasks.pnpm-install]
+description = "Installs dependencies with pnpm"
+quiet = true
+run = "pnpm install --loglevel error"
+sources = ["package.json", "pnpm-lock.yaml", "mise.toml"]
+outputs = ["node_modules/.pnpm/lock.yaml"]
