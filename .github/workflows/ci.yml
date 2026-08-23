@@ -14,10 +14,10 @@ jobs:
         with:
           persist-credentials: false
 
-      # Installs node, pnpm and shellcheck pinned in mise.toml.
-      - uses: jdx/mise-action@v2
+      - name: Install system dependencies
+        uses: jdx/mise-action@v2
 
-      - name: Install dependencies
+      - name: Install Node dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint
