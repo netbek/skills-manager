@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    echo "usage: skills-sync create-config [--force] [--config FILE] [--root DIR]
+    echo "usage: skills-sync init [--force] [--config FILE] [--root DIR]
        skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
        skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]" >&2
 }
@@ -14,7 +14,7 @@ opt_root=
 opt_checksum=
 while [ $# -gt 0 ]; do
     case $1 in
-        create-config | install | uninstall)
+        init | install | uninstall)
             if [ -n "$action" ]; then
                 usage
                 exit 1
@@ -54,7 +54,7 @@ while [ $# -gt 0 ]; do
     shift
 done
 case $action in
-    create-config | install | uninstall) ;;
+    init | install | uninstall) ;;
     *)
         usage
         exit 1
@@ -103,9 +103,8 @@ cd "$root_dir"
 
 config_file=${opt_config:-skills.conf}
 
-# create-config stops here: it only seeds the config, so the missing-config error below never
-# applies to it.
-if [ "$action" = create-config ]; then
+# init stops here: it only seeds the config, so the missing-config error below never applies to it.
+if [ "$action" = init ]; then
     example_dir=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
     if [ ! -f "$example_dir/skills.conf.example" ]; then
         echo "error: no skills.conf.example beside $example_dir/skills-sync.sh" >&2

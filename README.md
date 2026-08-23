@@ -19,8 +19,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
 ## Configure
 
-Run `skills-sync create-config` to copy the bundled `skills.conf.example` to your repo root as
-`skills.conf`:
+Run `skills-sync init` to copy the bundled `skills.conf.example` to your repo root as `skills.conf`:
 
 ```shell
 agents: opencode claude-code      # passed to the skills CLI as -a flags
@@ -60,7 +59,7 @@ skills-lock.json
 ## Commands
 
 ```shell
-skills-sync create-config [--force] [--config FILE] [--root DIR]
+skills-sync init [--force] [--config FILE] [--root DIR]
 ```
 
 Copy the bundled `skills.conf.example` to the repo root as `skills.conf`. Refuses to overwrite an
