@@ -19,7 +19,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
 ## Configure
 
-Run `skills-sync init` to copy the bundled `skills.conf.example` to your repo root as `skills.conf`:
+Run `skills-sync config > skills.conf` to write a starter config to your repo root:
 
 ```shell
 agents: opencode claude-code      # passed to the skills CLI as -a flags
@@ -59,11 +59,11 @@ skills-lock.json
 ## Commands
 
 ```shell
-skills-sync init [--force] [--config FILE] [--root DIR]
+skills-sync config
 ```
 
-Copy the bundled `skills.conf.example` to the repo root as `skills.conf`. Refuses to overwrite an
-existing config unless `--force`.
+Print a starter `skills.conf` to stdout. Redirect it into a file, e.g. `skills-sync config >
+skills.conf`.
 
 ```shell
 skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
@@ -87,7 +87,7 @@ skills-sync agents-md [--config FILE] [--root DIR]
 
 Print markdown cataloging installed skills for AGENTS.md: a table of the first `skills-dir`'s
 skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
-into the file (e.g. `skills-sync agents-md > AGENTS.md`).
+into a file, e.g. `skills-sync agents-md > AGENTS.md`.
 
 ## Layout assumptions
 
