@@ -1,6 +1,7 @@
 [tools]
 node = "24"
 pnpm = "latest"
+ripgrep = "latest"
 shellcheck = "latest"
 
 [settings]
