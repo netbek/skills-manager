@@ -11,10 +11,15 @@
   "bin": {
     "skills-sync": "skills-sync.sh"
   },
+  "scripts": {
+    "lint": "shellcheck skills-sync.sh tests/helpers.sh",
+    "test": "bats tests"
+  },
   "dependencies": {
     "skills": "^1.5.22"
   },
   "devDependencies": {
+    "bats": "^1.13.0",
     "npm-check-updates": "^23.0.2"
   }
 }

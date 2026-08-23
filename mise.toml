@@ -3,6 +3,7 @@ node = "24"
 pnpm = "latest"
 ripgrep = "latest"
 shellcheck = "latest"
+zizmor = "latest"
 
 [settings]
 lockfile = true
