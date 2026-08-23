@@ -64,7 +64,7 @@ skills-sync create-config [--force] [--config FILE] [--root DIR]
 ```
 
 Copy the bundled `skills.conf.example` to the repo root as `skills.conf`. Refuses to overwrite an
-existing config unless --force.
+existing config unless `--force`.
 
 ```shell
 skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
