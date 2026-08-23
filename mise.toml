@@ -1,0 +1,17 @@
+[tools]
+node = "24"
+pnpm = "latest"
+shellcheck = "latest"
+
+[settings]
+lockfile = true
+minimum_release_age = "7d"
+npm.package_manager = "pnpm"
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
+
+[hooks.enter]
+run = """
+mise install --quiet
+"""

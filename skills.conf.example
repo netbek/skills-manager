@@ -1,0 +1,14 @@
+# Agents receiving installs; each name is passed to the skills CLI as an -a flag:
+agents: opencode claude-code
+
+# Directories the CLI fills with skill folders. Repeatable. At least one is required; git-ignored
+# entries absent from the list below are pruned:
+skills-dir: .agents/skills
+
+# Directories of links into the first skills-dir. Repeatable. Dangling or excess git-ignored
+# entries are pruned; committed first-party skills get refreshed links here:
+links-dir: .claude/skills
+
+# Third-party skills, one entry per line: <owner/repo> [#ref] <skill ...>
+# At least one skill name is required; '#' starts a comment.
+vercel-labs/skills find-skills
