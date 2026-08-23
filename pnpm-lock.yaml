@@ -12,6 +12,9 @@ importers:
         specifier: ^1.5.22
         version: 1.5.22
     devDependencies:
+      bats:
+        specifier: ^1.13.0
+        version: 1.13.0
       npm-check-updates:
         specifier: ^23.0.2
         version: 23.0.2
@@ -21,6 +24,10 @@ packages:
   '@isaacs/fs-minipass@4.0.1':
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
     engines: {node: '>=18.0.0'}
+
+  bats@1.13.0:
+    resolution: {integrity: sha512-giSYKGTOcPZyJDbfbTtzAedLcNWdjCLbXYU3/MwPnjyvDXzu6Dgw8d2M+8jHhZXSmsCMSQqCp+YBsJ603UO4vQ==}
+    hasBin: true
 
   chownr@3.0.0:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
@@ -62,6 +69,8 @@ snapshots:
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
       minipass: 7.1.3
+
+  bats@1.13.0: {}
 
   chownr@3.0.0: {}
 
