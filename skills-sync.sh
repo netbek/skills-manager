@@ -338,7 +338,7 @@ render_agents_md() {
     printf '# AGENTS.md\n\n'
     printf '## Project skills\n\n'
     fill '{SKILLS_DIR}' "$skills_dir" <<'EOF'
-Load any skill below with the `skill` tool by name (e.g., `skill find-skills`), or read its `SKILL.md` directly (e.g., `read {SKILLS_DIR}/find-skills/SKILL.md`). If `{SKILLS_DIR}/` is empty, run `pnpm exec skills-sync install` to populate it (see [skills-sync docs](https://github.com/netbek/skills-sync)).
+Load any skill below with the `skill` tool by name (e.g., `skill find-skills`), or read its `SKILL.md` directly (e.g., `read {SKILLS_DIR}/find-skills/SKILL.md`). If `{SKILLS_DIR}/` is empty, run `npx skills-sync install` to populate it (see [skills-sync docs](https://github.com/netbek/skills-sync)).
 EOF
     if has_skills "$skills_dir"; then
         printf '\n'
