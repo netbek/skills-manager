@@ -81,6 +81,14 @@ skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
 Remove every git-ignored skill, its links, `.skills.checksum`, and `skills-lock.json`. First-party
 skills survive. Refuses to act outside a git work tree, where first-party detection fails.
 
+```shell
+skills-sync agents-md [--config FILE] [--root DIR]
+```
+
+Print markdown cataloging installed skills for AGENTS.md: a table of the first `skills-dir`'s
+skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
+into the file (e.g. `skills-sync agents-md > AGENTS.md`).
+
 ## Layout assumptions
 
 The repo root is found by walking up from the working directory to the nearest ancestor holding
