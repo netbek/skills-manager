@@ -12,6 +12,8 @@ npm.package_manager = "pnpm"
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
+# Skills https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#environment-variables
+DISABLE_TELEMETRY = "1"
 
 [hooks.enter]
 run = """

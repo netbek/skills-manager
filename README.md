@@ -39,7 +39,28 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
       whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
       too.
 
-2. **Optional:** Disable [`skills` CLI telemetry](https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#telemetry) in your environment.
+2. **Optional:** Disable telemetry. The underlying `skills` CLI sends [anonymous usage telemetry](https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#telemetry).
+    Because `skills-sync` shells out to that CLI, disable it by setting an environment variable wherever `skills-sync install` runs:
+
+    ```shell
+    export DISABLE_TELEMETRY=1      # preferred
+    export DO_NOT_TRACK=1           # alternative
+    ```
+
+    **mise** (`mise.toml`):
+
+    ```toml
+    [env]
+    DISABLE_TELEMETRY = "1"
+    ```
+
+    **Nix flake** (`flake.nix` devShell):
+
+    ```nix
+    devShells.default = pkgs.mkShell {
+      env.DISABLE_TELEMETRY = "1";
+    };
+    ```
 
 3. Run `skills-sync install` to install the skills listed in `skills.conf`.
 
