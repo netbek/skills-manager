@@ -58,12 +58,23 @@ skills-lock.json
 
 ## Commands
 
+| Command      | Purpose                                                        |
+|--------------|----------------------------------------------------------------|
+| `config`     | Print a starter `skills.conf` to stdout                        |
+| `install`    | Install listed skills; prune dropped git-ignored ones          |
+| `uninstall`  | Remove all git-ignored skills and generated state              |
+| `agents-md`  | Print a markdown catalog of installed skills for `AGENTS.md`   |
+
+### config
+
 ```shell
 skills-sync config
 ```
 
 Print a starter `skills.conf` to stdout. Redirect it into a file, e.g. `skills-sync config >
 skills.conf`.
+
+### install
 
 ```shell
 skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
@@ -74,12 +85,16 @@ hashes in `.skills.checksum` (config bytes, first-party skill names) match and t
 exist. `--force` reinstalls.
 Safe to run on shell entry: without `node_modules` or a network it warns and exits 0.
 
+### uninstall
+
 ```shell
 skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
 ```
 
 Remove every git-ignored skill, its links, `.skills.checksum`, and `skills-lock.json`. First-party
 skills survive. Refuses to act outside a git work tree, where first-party detection fails.
+
+### agents-md
 
 ```shell
 skills-sync agents-md [--config FILE] [--root DIR]
