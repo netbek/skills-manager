@@ -21,7 +21,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: shellcheck skills-sync.sh tests/helpers.sh
+        run: pnpm run lint
 
       - name: Test
-        run: pnpm exec bats tests
+        run: pnpm run test
