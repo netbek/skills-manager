@@ -1,7 +1,7 @@
 {
   "name": "@netbek/skills-sync",
   "version": "0.1.5",
-  "description": "Install and uninstall third-party agent skills declared in a repo's skills.yaml",
+  "description": "Install and uninstall third-party agent skills from a declarative config",
   "author": {
     "name": "Hein Bekker",
     "email": "hein@netbek.co.za",
