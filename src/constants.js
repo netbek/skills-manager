@@ -4,6 +4,6 @@ export const DEFAULT_CHECKSUM_FILE = '.skills.checksum';
 
 export const LOCK_FILE = 'skills-lock.json';
 
-export const CONFIG_KEYS = ['agents', 'links_dir', 'repos', 'skills_dir'];
+export const CONFIG_KEYS = ['agents', 'links-dir', 'repos', 'skills-dir'];
 
 export const REPO_KEYS = ['ref', 'repo', 'skills'];

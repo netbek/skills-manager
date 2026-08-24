@@ -80,9 +80,9 @@ test('install makes one CLI invocation per repo entry and repeats --skill within
       'agents:',
       '  - opencode',
       '  - claude-code',
-      'skills_dir:',
+      'skills-dir:',
       '  - .agents/skills',
-      'links_dir:',
+      'links-dir:',
       '  - .claude/skills',
       'repos:',
       '  - repo: repo/a',
@@ -106,7 +106,7 @@ test('install makes one CLI invocation per repo entry and repeats --skill within
   ]);
 });
 
-test('install creates every declared skills_dir and links_dir', () => {
+test('install creates every declared skills-dir and links-dir', () => {
   makeGitFixture(sandbox);
   writeConfig(
     sandbox,
@@ -114,10 +114,10 @@ test('install creates every declared skills_dir and links_dir', () => {
     [
       'agents:',
       '  - opencode',
-      'skills_dir:',
+      'skills-dir:',
       '  - .agents/skills',
       '  - .other/skills',
-      'links_dir:',
+      'links-dir:',
       '  - .claude/skills',
       '  - .codex/skills',
       'repos:',
@@ -217,7 +217,7 @@ test('config declaring no skills-dir errors and exits 1', () => {
     [
       'agents:',
       '  - opencode',
-      'links_dir:',
+      'links-dir:',
       '  - .claude/skills',
       'repos:',
       '  - repo: repo/a',
@@ -230,7 +230,7 @@ test('config declaring no skills-dir errors and exits 1', () => {
 
   const {status, stderr} = run(['--root', sandbox, 'install'], env);
   expect(status).toBe(1);
-  expect(stderr).toBe(`error: ${sandbox}/skills.yaml declares no skills_dir\n`);
+  expect(stderr).toBe(`error: ${sandbox}/skills.yaml declares no skills-dir\n`);
 });
 
 test('first-party skill is never reinstalled but gets refreshed links', () => {
@@ -242,9 +242,9 @@ test('first-party skill is never reinstalled but gets refreshed links', () => {
       'agents:',
       '  - opencode',
       '  - claude-code',
-      'skills_dir:',
+      'skills-dir:',
       '  - .agents/skills',
-      'links_dir:',
+      'links-dir:',
       '  - .claude/skills',
       'repos:',
       '  - repo: vercel-labs/skills',
@@ -350,9 +350,9 @@ test('custom --config and --checksum paths are honored', () => {
     [
       'agents:',
       '  - opencode',
-      'skills_dir:',
+      'skills-dir:',
       '  - .agents/skills',
-      'links_dir:',
+      'links-dir:',
       '  - .claude/skills',
       'repos:',
       '  - repo: repo/a',
@@ -449,13 +449,13 @@ test('install works outside a git work tree', () => {
 });
 
 describe('scalar shorthand and refs', () => {
-  test('scalar agents and skills_dir coerce to single-element lists', () => {
+  test('scalar agents and skills-dir coerce to single-element lists', () => {
     writeConfig(
       sandbox,
       'skills.yaml',
       [
         'agents: opencode',
-        'skills_dir: .agents/skills',
+        'skills-dir: .agents/skills',
         'repos:',
         '  - repo: repo/a',
         '    skills: alpha',
@@ -477,7 +477,7 @@ describe('scalar shorthand and refs', () => {
       [
         'agents:',
         '  - opencode',
-        'skills_dir:',
+        'skills-dir:',
         '  - .agents/skills',
         'repos:',
         '  - repo: vercel-labs/skills',

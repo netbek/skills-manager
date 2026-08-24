@@ -17,12 +17,12 @@ const STARTER_GOLDEN = [
   '',
   '# Directories the CLI fills with skill folders. At least one is required; git-ignored',
   '# entries absent from the list below are pruned:',
-  'skills_dir:',
+  'skills-dir:',
   '  - .agents/skills',
   '',
-  '# Directories of links into the first skills_dir. Dangling or excess git-ignored',
+  '# Directories of links into the first skills-dir. Dangling or excess git-ignored',
   '# entries are pruned; committed first-party skills get refreshed links here:',
-  'links_dir:',
+  'links-dir:',
   '  - .claude/skills',
   '',
   '# Third-party skills. Each entry needs a repo, an optional ref, and at least one skill:',
@@ -73,21 +73,21 @@ describe('skills.yaml validation', () => {
     );
   });
 
-  test('missing skills_dir errors and exits 1', () => {
+  test('missing skills-dir errors and exits 1', () => {
     writeConfig(sandbox, 'skills.yaml', 'agents:\n  - opencode\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml declares no skills_dir\n`
+      `error: ${sandbox}/skills.yaml declares no skills-dir\n`
     );
   });
 
-  test('empty skills_dir list errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'skills_dir: []\n');
+  test('empty skills-dir list errors and exits 1', () => {
+    writeConfig(sandbox, 'skills.yaml', 'skills-dir: []\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml declares no skills_dir\n`
+      `error: ${sandbox}/skills.yaml declares no skills-dir\n`
     );
   });
 
@@ -96,7 +96,7 @@ describe('skills.yaml validation', () => {
       sandbox,
       'skills.yaml',
       [
-        'skills_dir:',
+        'skills-dir:',
         '  - .agents/skills',
         'repos:',
         '  - repo: owner/repo',
@@ -115,7 +115,7 @@ describe('skills.yaml validation', () => {
       sandbox,
       'skills.yaml',
       [
-        'skills_dir:',
+        'skills-dir:',
         '  - .agents/skills',
         'repos:',
         '  - repo: owner/repo',
@@ -133,7 +133,7 @@ describe('skills.yaml validation', () => {
   });
 
   test('invalid YAML syntax errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'skills_dir: [unclosed\n');
+    writeConfig(sandbox, 'skills.yaml', 'skills-dir: [unclosed\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr.startsWith(`error: ${sandbox}/skills.yaml:`)).toBe(true);

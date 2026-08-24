@@ -31,12 +31,12 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
     # Directories the CLI fills with skill folders. At least one is required; git-ignored
     # entries absent from the list below are pruned:
-    skills_dir:
+    skills-dir:
       - .agents/skills
 
-    # Directories of links into the first skills_dir. Dangling or excess git-ignored
+    # Directories of links into the first skills-dir. Dangling or excess git-ignored
     # entries are pruned; committed first-party skills get refreshed links here:
-    links_dir:
+    links-dir:
       - .claude/skills
 
     # Third-party skills. Each entry needs a repo, an optional ref, and at least one skill:
@@ -49,10 +49,10 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
     Rules:
 
-    * At least one `skills_dir` entry is required. It anchors first-party detection: a skill directory that
+    * At least one `skills-dir` entry is required. It anchors first-party detection: a skill directory that
       is committed (not git-ignored) is never overwritten or removed.
-    * `skills_dir` entries are swept for git-ignored skills absent from the config; those are removed.
-    * `links_dir` entries hold links into the first `skills_dir`. Dangling links are pruned; excess
+    * `skills-dir` entries are swept for git-ignored skills absent from the config; those are removed.
+    * `links-dir` entries hold links into the first `skills-dir`. Dangling links are pruned; excess
       git-ignored links are pruned; every first-party skill gets a refreshed link in each directory,
       whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
       too.
