@@ -1,6 +1,6 @@
 {
   "name": "@netbek/skills-manager",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Install and uninstall third-party agent skills from a declarative config",
   "author": {
     "name": "Hein Bekker",
