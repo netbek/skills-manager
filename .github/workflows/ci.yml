@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Install system dependencies
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@v4
 
       - name: Install Node dependencies
         run: pnpm install --frozen-lockfile
