@@ -31,12 +31,13 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
     # Directories the CLI fills with skill folders. At least one is required; git-ignored
     # entries absent from the list below are pruned:
-    skills-dir:
+    skills-dirs:
       - .agents/skills
 
-    # Directories of links into the first skills-dir. Dangling or excess git-ignored
-    # entries are pruned; committed first-party skills get refreshed links here:
-    links-dir:
+    # Directories of links into the first skills-dirs entry. Dangling or excess
+    # git-ignored entries are pruned; committed first-party skills get refreshed
+    # links here:
+    links-dirs:
       - .claude/skills
 
     # Third-party skills. Each entry needs a repo, an optional ref, and at least one skill:
@@ -49,10 +50,10 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
     Rules:
 
-    * At least one `skills-dir` entry is required. It anchors first-party detection: a skill directory that
+    * At least one `skills-dirs` entry is required. It anchors first-party detection: a skill directory that
       is committed (not git-ignored) is never overwritten or removed.
-    * `skills-dir` entries are swept for git-ignored skills absent from the config; those are removed.
-    * `links-dir` entries hold links into the first `skills-dir`. Dangling links are pruned; excess
+    * `skills-dirs` entries are swept for git-ignored skills absent from the config; those are removed.
+    * `links-dirs` entries hold links into the first `skills-dirs` entry. Dangling links are pruned; excess
       git-ignored links are pruned; every first-party skill gets a refreshed link in each directory,
       whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
       too.
@@ -147,15 +148,15 @@ skills survive. Refuses to act outside a git work tree, where first-party detect
 skills-sync agents-md [--config FILE] [--root DIR]
 ```
 
-Print markdown cataloging installed skills for `AGENTS.md`: a table of the first `skills-dir`'s
-skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
+Print markdown cataloging installed skills for `AGENTS.md`: a table of the first `skills-dirs`
+entry's skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
 into a file, e.g. `skills-sync agents-md > AGENTS.md`.
 
 ## Layout assumptions
 
 The repo root is found by walking up from the working directory to the nearest ancestor holding
 `.git` or `package.json`. Agents other than the defaults need no code changes unless they keep
-skills outside a declared `skills-dir` or `links-dir`.
+skills outside a declared `skills-dirs` or `links-dirs` entry.
 
 ## License
 

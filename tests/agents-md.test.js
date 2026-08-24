@@ -17,7 +17,7 @@ beforeEach(() => {
   writeConfig(
     sandbox,
     'skills.yaml',
-    ['skills-dir:', '  - .agents/skills', ''].join('\n')
+    ['skills-dirs:', '  - .agents/skills', ''].join('\n')
   );
 });
 

@@ -38,11 +38,11 @@ export function parseConfig(text, displayPath) {
   }
 
   const agents = stringList(doc.agents, displayPath, 'agents');
-  const skillsDirs = stringList(doc['skills-dir'], displayPath, 'skills-dir');
+  const skillsDirs = stringList(doc['skills-dirs'], displayPath, 'skills-dirs');
   if (skillsDirs.length === 0) {
-    throw new CliError(`${displayPath} declares no skills-dir`);
+    throw new CliError(`${displayPath} declares no skills-dirs`);
   }
-  const linksDirs = stringList(doc['links-dir'], displayPath, 'links-dir');
+  const linksDirs = stringList(doc['links-dirs'], displayPath, 'links-dirs');
   const repos = parseRepos(doc.repos, displayPath);
 
   return {path: displayPath, agents, skillsDirs, linksDirs, repos};
