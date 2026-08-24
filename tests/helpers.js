@@ -51,7 +51,7 @@ export const DEFAULT_CONFIG = [
 ].join('\n');
 
 export function defaultConfig(sandbox) {
-  writeConfig(sandbox, 'skills.yaml', DEFAULT_CONFIG);
+  writeConfig(sandbox, 'skills-sync.yaml', DEFAULT_CONFIG);
 }
 
 function runGit(args, cwd) {
@@ -71,7 +71,7 @@ export function makeGitFixture(sandbox) {
       '.claude/skills/*',
       '!.agents/skills/fp-skill',
       '!.claude/skills/committed-link',
-      '.skills.checksum',
+      'node_modules/',
       'skills-lock.json',
       ''
     ].join('\n')

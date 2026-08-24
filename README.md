@@ -5,7 +5,7 @@ Install and uninstall third-party agent skills from a declarative config.
 ## Why
 
 The `skills` CLI installs skills but keeps no per-repo record of what should be installed.
-`skills-sync` adds that record: a committed `skills.yaml` lists the agents and skills a repo wants.
+`skills-sync` adds that record: a committed `skills-sync.yaml` lists the agents and skills a repo wants.
 Running install brings the checkout back in line — installing what's missing and removing what's
 gone from the list. If nothing changed, it does nothing.
 
@@ -19,7 +19,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
 ## Configure
 
-1. Run `skills-sync config > skills.yaml` to write a starter config to your repo root:
+1. Run `skills-sync config > skills-sync.yaml` to write a starter config to your repo root:
 
     ```yaml
     # Docs: https://github.com/netbek/skills-sync
@@ -83,13 +83,12 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
     };
     ```
 
-3. Run `skills-sync install` to install the skills listed in `skills.yaml`.
+3. Run `skills-sync install` to install the skills listed in `skills-sync.yaml`.
 
 4. Configure `.gitignore`:
 
     ```gitignore
     # Generated state
-    .skills.checksum
     skills-lock.json
 
     # Third-party agent skills are ignored
@@ -108,7 +107,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 
 | Command      | Purpose                                                        |
 |--------------|----------------------------------------------------------------|
-| `config`     | Print a starter `skills.yaml` to stdout                        |
+| `config`     | Print a starter `skills-sync.yaml` to stdout                   |
 | `install`    | Install listed skills; prune dropped git-ignored ones          |
 | `uninstall`  | Remove all git-ignored skills and generated state              |
 | `agents-md`  | Print a markdown catalog of installed skills for `AGENTS.md`   |
@@ -119,8 +118,8 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
 skills-sync config
 ```
 
-Print a starter `skills.yaml` to stdout. Redirect it into a file, e.g. `skills-sync config >
-skills.yaml`.
+Print a starter `skills-sync.yaml` to stdout. Redirect it into a file, e.g.
+`skills-sync config > skills-sync.yaml`.
 
 ### `skills-sync install`
 
@@ -128,9 +127,9 @@ skills.yaml`.
 skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
 ```
 
-Install listed skills; prune git-ignored ones the config dropped. Skips all work when the
-hashes in `.skills.checksum` (config bytes, first-party skill names) match and the `skills-dirs`
-exist. `--force` reinstalls.
+Install listed skills; prune git-ignored ones the config dropped. Skips all work when the hashes
+in `node_modules/.skills-sync.checksum` (config bytes, first-party skill names) match and the
+`skills-dirs` exist. `--force` reinstalls.
 Safe to run on shell entry: without `node_modules` or a network it warns and exits 0.
 
 ### `skills-sync uninstall`
@@ -139,8 +138,9 @@ Safe to run on shell entry: without `node_modules` or a network it warns and exi
 skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
 ```
 
-Remove every git-ignored skill, its links, `.skills.checksum`, and `skills-lock.json`. First-party
-skills survive. Refuses to act outside a git work tree, where first-party detection fails.
+Remove every git-ignored skill, its links, `node_modules/.skills-sync.checksum`, and
+`skills-lock.json`. First-party skills survive. Refuses to act outside a git work tree, where
+first-party detection fails.
 
 ### `skills-sync agents-md`
 

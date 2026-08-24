@@ -75,7 +75,7 @@ test('install makes one CLI invocation per repo entry and repeats --skill within
   makeGitFixture(sandbox);
   writeConfig(
     sandbox,
-    'skills.yaml',
+    'skills-sync.yaml',
     [
       'agents:',
       '  - opencode',
@@ -110,7 +110,7 @@ test('install creates every declared skills-dirs and links-dirs', () => {
   makeGitFixture(sandbox);
   writeConfig(
     sandbox,
-    'skills.yaml',
+    'skills-sync.yaml',
     [
       'agents:',
       '  - opencode',
@@ -149,9 +149,12 @@ test('install records config and first-party hashes in the checksum file', () =>
   const {status} = run(['--root', sandbox, 'install'], env);
   expect(status).toBe(0);
 
-  const checksum = readFileSync(path.join(sandbox, '.skills.checksum'), 'utf8');
+  const checksum = readFileSync(
+    path.join(sandbox, 'node_modules', '.skills-sync.checksum'),
+    'utf8'
+  );
   const hash = createHash('sha256')
-    .update(readFileSync(path.join(sandbox, 'skills.yaml')))
+    .update(readFileSync(path.join(sandbox, 'skills-sync.yaml')))
     .digest('hex');
   const fpHash = createHash('sha256')
     .update('fp-skill\n', 'utf8')
@@ -187,9 +190,9 @@ test('editing the config triggers a fresh pass covering both old and new entries
 
   expect(run(['--root', sandbox, 'install'], env).status).toBe(0);
   writeFileSync(
-    path.join(sandbox, 'skills.yaml'),
+    path.join(sandbox, 'skills-sync.yaml'),
     `${readFileSync(
-      path.join(sandbox, 'skills.yaml'),
+      path.join(sandbox, 'skills-sync.yaml'),
       'utf8'
     )}  - repo: other/repo\n    skills:\n      - delta\n`
   );
@@ -205,7 +208,7 @@ test('editing the config triggers a fresh pass covering both old and new entries
 test('missing config file errors and exits 1', () => {
   const {status, stdout, stderr} = run(['--root', sandbox, 'install']);
   expect(status).toBe(1);
-  expect(stderr).toBe(`error: no config at ${sandbox}/skills.yaml\n`);
+  expect(stderr).toBe(`error: no config at ${sandbox}/skills-sync.yaml\n`);
   expect(stdout).toBe('');
 });
 
@@ -213,7 +216,7 @@ test('config declaring no skills-dirs errors and exits 1', () => {
   makeGitFixture(sandbox);
   writeConfig(
     sandbox,
-    'skills.yaml',
+    'skills-sync.yaml',
     [
       'agents:',
       '  - opencode',
@@ -231,7 +234,7 @@ test('config declaring no skills-dirs errors and exits 1', () => {
   const {status, stderr} = run(['--root', sandbox, 'install'], env);
   expect(status).toBe(1);
   expect(stderr).toBe(
-    `error: ${sandbox}/skills.yaml declares no skills-dirs\n`
+    `error: ${sandbox}/skills-sync.yaml declares no skills-dirs\n`
   );
 });
 
@@ -239,7 +242,7 @@ test('first-party skill is never reinstalled but gets refreshed links', () => {
   makeGitFixture(sandbox);
   writeConfig(
     sandbox,
-    'skills.yaml',
+    'skills-sync.yaml',
     [
       'agents:',
       '  - opencode',
@@ -380,7 +383,9 @@ test('custom --config and --checksum paths are honored', () => {
   expect(status).toBe(0);
   expect(calls()).toHaveLength(1);
   expect(existsSync(path.join(sandbox, 'state', 'checksums'))).toBe(true);
-  expect(existsSync(path.join(sandbox, '.skills.checksum'))).toBe(false);
+  expect(
+    existsSync(path.join(sandbox, 'node_modules', '.skills-sync.checksum'))
+  ).toBe(false);
 });
 
 test('warns when the checksum file is not git-ignored', () => {
@@ -416,7 +421,9 @@ test('warns when the checksum file is not git-ignored', () => {
 
   const {status, stderr} = run(['--root', sandbox, 'install'], env);
   expect(status).toBe(0);
-  expect(stderr).toContain('warning: add .skills.checksum to .gitignore');
+  expect(stderr).toContain(
+    'warning: add node_modules/.skills-sync.checksum to .gitignore'
+  );
 });
 
 test('CLI failure warns but still exits 0', () => {
@@ -454,7 +461,7 @@ describe('scalar shorthand and refs', () => {
   test('scalar agents and skills-dirs coerce to single-element lists', () => {
     writeConfig(
       sandbox,
-      'skills.yaml',
+      'skills-sync.yaml',
       [
         'agents: opencode',
         'skills-dirs: .agents/skills',
@@ -475,7 +482,7 @@ describe('scalar shorthand and refs', () => {
   test('repo ref is passed to the CLI as repo#ref', () => {
     writeConfig(
       sandbox,
-      'skills.yaml',
+      'skills-sync.yaml',
       [
         'agents:',
         '  - opencode',

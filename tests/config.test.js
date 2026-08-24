@@ -64,38 +64,42 @@ test('config works without a config file, git repo or skills binary', () => {
   expect(stderr).toBe('');
 });
 
-describe('skills.yaml validation', () => {
+describe('skills-sync.yaml validation', () => {
   test('unknown top-level key errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'skill_dirs:\n  - .agents/skills\n');
+    writeConfig(
+      sandbox,
+      'skills-sync.yaml',
+      'skill_dirs:\n  - .agents/skills\n'
+    );
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml: unknown key 'skill_dirs'\n`
+      `error: ${sandbox}/skills-sync.yaml: unknown key 'skill_dirs'\n`
     );
   });
 
   test('missing skills-dirs errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'agents:\n  - opencode\n');
+    writeConfig(sandbox, 'skills-sync.yaml', 'agents:\n  - opencode\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml declares no skills-dirs\n`
+      `error: ${sandbox}/skills-sync.yaml declares no skills-dirs\n`
     );
   });
 
   test('empty skills-dirs list errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'skills-dirs: []\n');
+    writeConfig(sandbox, 'skills-sync.yaml', 'skills-dirs: []\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml declares no skills-dirs\n`
+      `error: ${sandbox}/skills-sync.yaml declares no skills-dirs\n`
     );
   });
 
   test('repo entry without skills errors and exits 1', () => {
     writeConfig(
       sandbox,
-      'skills.yaml',
+      'skills-sync.yaml',
       [
         'skills-dirs:',
         '  - .agents/skills',
@@ -107,14 +111,14 @@ describe('skills.yaml validation', () => {
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml: repos[0].skills must list at least one skill\n`
+      `error: ${sandbox}/skills-sync.yaml: repos[0].skills must list at least one skill\n`
     );
   });
 
   test('repo entry with unknown key errors and exits 1', () => {
     writeConfig(
       sandbox,
-      'skills.yaml',
+      'skills-sync.yaml',
       [
         'skills-dirs:',
         '  - .agents/skills',
@@ -129,23 +133,23 @@ describe('skills.yaml validation', () => {
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml: repos[0]: unknown key 'branch'\n`
+      `error: ${sandbox}/skills-sync.yaml: repos[0]: unknown key 'branch'\n`
     );
   });
 
   test('invalid YAML syntax errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', 'skills-dirs: [unclosed\n');
+    writeConfig(sandbox, 'skills-sync.yaml', 'skills-dirs: [unclosed\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
-    expect(stderr.startsWith(`error: ${sandbox}/skills.yaml:`)).toBe(true);
+    expect(stderr.startsWith(`error: ${sandbox}/skills-sync.yaml:`)).toBe(true);
   });
 
   test('non-mapping top level errors and exits 1', () => {
-    writeConfig(sandbox, 'skills.yaml', '- just\n- a\n- list\n');
+    writeConfig(sandbox, 'skills-sync.yaml', '- just\n- a\n- list\n');
     const {status, stderr} = run(['--root', sandbox, 'install']);
     expect(status).toBe(1);
     expect(stderr).toBe(
-      `error: ${sandbox}/skills.yaml: top level must be a mapping\n`
+      `error: ${sandbox}/skills-sync.yaml: top level must be a mapping\n`
     );
   });
 });

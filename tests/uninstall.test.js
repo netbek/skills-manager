@@ -49,7 +49,11 @@ function makeInstalledFixture() {
     './nope',
     path.join(sandbox, '.claude', 'skills', 'dangling-link')
   );
-  writeConfig(sandbox, '.skills.checksum', 'deadbeef\ndeadbeef\n');
+  writeConfig(
+    sandbox,
+    'node_modules/.skills-sync.checksum',
+    'deadbeef\ndeadbeef\n'
+  );
   writeConfig(sandbox, 'skills-lock.json', '{}\n');
 }
 
@@ -71,7 +75,9 @@ test('uninstall removes ignored skills and links, spares committed ones, drops s
   expect(
     existsSync(path.join(sandbox, '.claude', 'skills', 'dangling-link'))
   ).toBe(false);
-  expect(existsSync(path.join(sandbox, '.skills.checksum'))).toBe(false);
+  expect(
+    existsSync(path.join(sandbox, 'node_modules', '.skills-sync.checksum'))
+  ).toBe(false);
   expect(existsSync(path.join(sandbox, 'skills-lock.json'))).toBe(false);
 
   expect(
@@ -96,7 +102,7 @@ test('uninstall outside a git work tree refuses to remove anything', () => {
     '../.agents/skills/keep',
     path.join(sandbox, '.claude', 'skills-link')
   );
-  writeConfig(sandbox, '.skills.checksum', 'hash\nhash\n');
+  writeConfig(sandbox, 'node_modules/.skills-sync.checksum', 'hash\nhash\n');
   writeConfig(sandbox, 'skills-lock.json', '{}\n');
 
   const {status, stderr} = run(['--root', sandbox, 'uninstall']);
@@ -109,12 +115,14 @@ test('uninstall outside a git work tree refuses to remove anything', () => {
     existsSync(path.join(sandbox, '.agents', 'skills', 'keep', 'SKILL.md'))
   ).toBe(true);
   expect(existsSync(path.join(sandbox, '.claude', 'skills-link'))).toBe(true);
-  expect(existsSync(path.join(sandbox, '.skills.checksum'))).toBe(true);
+  expect(
+    existsSync(path.join(sandbox, 'node_modules', '.skills-sync.checksum'))
+  ).toBe(true);
   expect(existsSync(path.join(sandbox, 'skills-lock.json'))).toBe(true);
 });
 
 test('uninstall still requires a config file', () => {
   const {status, stderr} = run(['--root', sandbox, 'uninstall']);
   expect(status).toBe(1);
-  expect(stderr).toBe(`error: no config at ${sandbox}/skills.yaml\n`);
+  expect(stderr).toBe(`error: no config at ${sandbox}/skills-sync.yaml\n`);
 });
