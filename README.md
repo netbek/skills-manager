@@ -67,14 +67,14 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
     export DO_NOT_TRACK=1           # alternative
     ```
 
-    **mise** (`mise.toml`):
+    mise (`mise.toml`):
 
     ```toml
     [env]
     DISABLE_TELEMETRY = "1"
     ```
 
-    **Nix flake** (`flake.nix` devShell):
+    Nix flake (`flake.nix` devShell):
 
     ```nix
     devShells.default = pkgs.mkShell {
@@ -147,7 +147,7 @@ skills survive. Refuses to act outside a git work tree, where first-party detect
 skills-sync agents-md [--config FILE] [--root DIR]
 ```
 
-Print markdown cataloging installed skills for AGENTS.md: a table of the first `skills-dir`'s
+Print markdown cataloging installed skills for `AGENTS.md`: a table of the first `skills-dir`'s
 skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
 into a file, e.g. `skills-sync agents-md > AGENTS.md`.
 
