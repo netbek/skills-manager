@@ -2,13 +2,6 @@
 
 Install and uninstall third-party agent skills from a declarative config.
 
-## Why
-
-The `skills` CLI installs skills but keeps no per-repo record of what should be installed.
-`skills-manager` adds that record: a committed `skills-manager.yaml` lists the agents and skills a repo wants.
-Running install brings the checkout back in line — installing what's missing and removing what's
-gone from the list. If nothing changed, it does nothing.
-
 ## Install
 
 Add the package as a dev dependency:
@@ -168,12 +161,6 @@ skills-manager agents-md [--config FILE] [--root DIR]
 Print markdown cataloging installed skills for `AGENTS.md`: a table of the first `skills-dirs`
 entry's skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
 into a file, e.g. `skills-manager agents-md > AGENTS.md`.
-
-## Layout assumptions
-
-The repo root is found by walking up from the working directory to the nearest ancestor holding
-`.git` or `package.json`. Agents other than the defaults need no code changes unless they keep
-skills outside a declared `skills-dirs` or `links-dirs` entry.
 
 ## License
 
