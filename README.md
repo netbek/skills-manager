@@ -24,13 +24,14 @@ pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
     ```yaml
     # Docs: https://github.com/netbek/skills-manager
 
-    # Agents receiving installs; each name is passed to the skills CLI as an -a flag:
+    # Agents receiving installs; each name is passed to the skills CLI
+    # as an -a flag:
     agents:
       - opencode
       - claude-code
 
-    # Directories the CLI fills with skill folders. At least one is required; git-ignored
-    # entries absent from the list below are pruned:
+    # Directories the CLI fills with skill directories. At least one is required;
+    # git-ignored entries absent from the list below are pruned:
     skills-dirs:
       - .agents/skills
 
@@ -40,7 +41,8 @@ pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
     links-dirs:
       - .claude/skills
 
-    # Third-party skills. Each entry needs a repo, an optional ref, and at least one skill:
+    # Third-party skills. Each entry needs a repo, an optional ref,
+    # and at least one skill:
     repos:
       - repo: vercel-labs/skills
         # ref: v1.2.3
