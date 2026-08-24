@@ -1,25 +1,36 @@
 {
-  "name": "@netbek/skills-sync",
+  "name": "@netbek/skills-manager",
   "version": "0.1.5",
-  "description": "Install and uninstall third-party agent skills declared in a repo's skills.conf",
+  "description": "Install and uninstall third-party agent skills from a declarative config",
   "author": {
     "name": "Hein Bekker",
     "email": "hein@netbek.co.za",
     "url": "https://www.netbek.co.za"
   },
   "license": "AGPL-3.0",
+  "type": "module",
   "bin": {
-    "skills-sync": "skills-sync.sh"
+    "skills-manager": "bin/skills-manager.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=24"
   },
   "scripts": {
-    "lint": "shellcheck skills-sync.sh tests/helpers.sh",
-    "test": "bats tests"
+    "lint": "oxlint .",
+    "test": "vitest run"
   },
   "dependencies": {
-    "skills": "^1.5.22"
+    "skills": "^1.5.22",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "bats": "^1.13.0",
-    "npm-check-updates": "^23.0.2"
+    "@types/node": "^24",
+    "npm-check-updates": "^23.0.2",
+    "oxlint": "^1",
+    "vitest": "^4"
   }
 }
