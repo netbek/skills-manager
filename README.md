@@ -22,27 +22,24 @@ pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
 1. Run `skills-manager config > skills-manager.yaml` to write a starter config to your repo root:
 
     ```yaml
-    # Docs: https://github.com/netbek/skills-manager
-
-    # Agents receiving installs; each name is passed to the skills CLI
-    # as an -a flag:
+    # Agents to install skills for. See https://github.com/netbek/skills-manager#supported-agents
     agents:
       - opencode
       - claude-code
 
-    # Directories the CLI fills with skill directories. At least one is required;
-    # git-ignored entries absent from the list below are pruned:
+    # Directories the CLI fills with skills. At least one is required.
+    # git-ignored entries absent from the list below are pruned.
     skills-dirs:
       - .agents/skills
 
-    # Directories of links into the first skills-dirs entry. Dangling or excess
-    # git-ignored entries are pruned; committed first-party skills get refreshed
-    # links here:
+    # Symlink dirs that mirror the first skills-dirs entry. The CLI removes
+    # dangling or leftover git-ignored links and refreshes links to committed
+    # first-party skills.
     links-dirs:
       - .claude/skills
 
-    # Third-party skills. Each entry needs a repo, an optional ref,
-    # and at least one skill:
+    # Third-party skills. Each entry needs a repo, an optional ref, and at least
+    # one skill. See https://github.com/netbek/skills-manager#source-formats
     repos:
       - repo: vercel-labs/skills
         # ref: v1.2.3
@@ -55,11 +52,12 @@ pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
     * At least one `skills-dirs` entry is required. It anchors first-party detection: a skill directory that
       is committed (not git-ignored) is never overwritten or removed.
     * `skills-dirs` entries are swept for git-ignored skills absent from the config; those are removed.
-    * `links-dirs` entries hold links into the first `skills-dirs` entry. Dangling links are pruned; excess
+    * `links-dirs` entries mirror the first `skills-dirs` entry via symlinks. Dangling links are pruned; excess
       git-ignored links are pruned; every first-party skill gets a refreshed link in each directory,
       whether or not the config lists it. Commit a link to make its skill first-party for Claude Code
       too.
     * Each `repos` entry is installed via the underlying CLI as `<repo>` or `<repo>#<ref>` when a ref is set.
+      `repo` accepts any `skills` source; see [Source formats](#source-formats) for the complete list.
     * The config is validated strictly: unknown keys, missing fields and malformed values fail with an error.
 
 2. **Optional:** Disable telemetry. The underlying `skills` CLI sends [anonymous usage telemetry](https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#telemetry).
@@ -104,6 +102,23 @@ pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
     ```
 
 5. **Optional:** Run `skills-manager agents-md > AGENTS.md` to write an `AGENTS.md` to your repo root.
+
+### Supported agents
+
+Each `agents` entry is passed to the underlying `skills` CLI as an `-a` flag. Any name from its
+[supported agents list](https://github.com/vercel-labs/skills#supported-agents) works.
+
+### Source formats
+
+`repos[].repo` accepts any source the underlying `skills` CLI accepts:
+
+* GitHub shorthand: `vercel-labs/skills`, optionally followed by a skill path,
+  e.g. `vercel-labs/skills/skills/find-skills`
+* Full GitHub URL: `https://github.com/vercel-labs/skills`
+* Direct path to a skill in a repo: `https://github.com/vercel-labs/skills/tree/main/skills/find-skills`
+* GitLab URL: `https://gitlab.com/group/repo`
+* Any git URL: `git@github.com:vercel-labs/skills.git`
+* Local path: `./my-local-skills`
 
 ## Commands
 
