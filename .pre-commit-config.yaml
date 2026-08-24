@@ -13,4 +13,4 @@ repos:
         alias: prettier-js
         name: prettier (js)
         args: [--parser, babel, --write]
-        files: ^(bin|src|tests)/.*\.(js|jsx|cjs|mjs)$
+        files: ^.*\.(js|cjs|mjs)$
