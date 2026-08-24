@@ -1,11 +1,11 @@
-# skills-sync
+# skills-manager
 
 Install and uninstall third-party agent skills from a declarative config.
 
 ## Why
 
 The `skills` CLI installs skills but keeps no per-repo record of what should be installed.
-`skills-sync` adds that record: a committed `skills-sync.yaml` lists the agents and skills a repo wants.
+`skills-manager` adds that record: a committed `skills-manager.yaml` lists the agents and skills a repo wants.
 Running install brings the checkout back in line — installing what's missing and removing what's
 gone from the list. If nothing changed, it does nothing.
 
@@ -14,15 +14,15 @@ gone from the list. If nothing changed, it does nothing.
 Add the package as a dev dependency:
 
 ```shell
-pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
+pnpm add -D @netbek/skills-manager   # or: npm i -D / yarn add -D
 ```
 
 ## Configure
 
-1. Run `skills-sync config > skills-sync.yaml` to write a starter config to your repo root:
+1. Run `skills-manager config > skills-manager.yaml` to write a starter config to your repo root:
 
     ```yaml
-    # Docs: https://github.com/netbek/skills-sync
+    # Docs: https://github.com/netbek/skills-manager
 
     # Agents receiving installs; each name is passed to the skills CLI as an -a flag:
     agents:
@@ -61,7 +61,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
     * The config is validated strictly: unknown keys, missing fields and malformed values fail with an error.
 
 2. **Optional:** Disable telemetry. The underlying `skills` CLI sends [anonymous usage telemetry](https://github.com/vercel-labs/skills/blob/v1.5.16/README.md#telemetry).
-    Because `skills-sync` shells out to that CLI, disable it by setting an environment variable wherever `skills-sync install` runs:
+    Because `skills-manager` shells out to that CLI, disable it by setting an environment variable wherever `skills-manager install` runs:
 
     ```shell
     export DISABLE_TELEMETRY=1      # preferred
@@ -83,7 +83,7 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
     };
     ```
 
-3. Run `skills-sync install` to install the skills listed in `skills-sync.yaml`.
+3. Run `skills-manager install` to install the skills listed in `skills-manager.yaml`.
 
 4. Configure `.gitignore`:
 
@@ -101,56 +101,56 @@ pnpm add -D @netbek/skills-sync   # or: npm i -D / yarn add -D
     .claude/skills/*
     ```
 
-5. **Optional:** Run `skills-sync agents-md > AGENTS.md` to write an `AGENTS.md` to your repo root.
+5. **Optional:** Run `skills-manager agents-md > AGENTS.md` to write an `AGENTS.md` to your repo root.
 
 ## Commands
 
 | Command      | Purpose                                                        |
 |--------------|----------------------------------------------------------------|
-| `config`     | Print a starter `skills-sync.yaml` to stdout                   |
+| `config`     | Print a starter `skills-manager.yaml` to stdout                |
 | `install`    | Install listed skills; prune dropped git-ignored ones          |
 | `uninstall`  | Remove all git-ignored skills and generated state              |
 | `agents-md`  | Print a markdown catalog of installed skills for `AGENTS.md`   |
 
-### `skills-sync config`
+### `skills-manager config`
 
 ```shell
-skills-sync config
+skills-manager config
 ```
 
-Print a starter `skills-sync.yaml` to stdout. Redirect it into a file, e.g.
-`skills-sync config > skills-sync.yaml`.
+Print a starter `skills-manager.yaml` to stdout. Redirect it into a file, e.g.
+`skills-manager config > skills-manager.yaml`.
 
-### `skills-sync install`
+### `skills-manager install`
 
 ```shell
-skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]
+skills-manager install [--force] [--config FILE] [--root DIR] [--checksum FILE]
 ```
 
 Install listed skills; prune git-ignored ones the config dropped. Skips all work when the hashes
-in `node_modules/.skills-sync.checksum` (config bytes, first-party skill names) match and the
+in `node_modules/.skills-manager.checksum` (config bytes, first-party skill names) match and the
 `skills-dirs` exist. `--force` reinstalls.
 Safe to run on shell entry: without `node_modules` or a network it warns and exits 0.
 
-### `skills-sync uninstall`
+### `skills-manager uninstall`
 
 ```shell
-skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]
+skills-manager uninstall [--config FILE] [--root DIR] [--checksum FILE]
 ```
 
-Remove every git-ignored skill, its links, `node_modules/.skills-sync.checksum`, and
+Remove every git-ignored skill, its links, `node_modules/.skills-manager.checksum`, and
 `skills-lock.json`. First-party skills survive. Refuses to act outside a git work tree, where
 first-party detection fails.
 
-### `skills-sync agents-md`
+### `skills-manager agents-md`
 
 ```shell
-skills-sync agents-md [--config FILE] [--root DIR]
+skills-manager agents-md [--config FILE] [--root DIR]
 ```
 
 Print markdown cataloging installed skills for `AGENTS.md`: a table of the first `skills-dirs`
 entry's skills, then a section per `node_modules` package that ships a `skills/` directory. Redirect it
-into a file, e.g. `skills-sync agents-md > AGENTS.md`.
+into a file, e.g. `skills-manager agents-md > AGENTS.md`.
 
 ## Layout assumptions
 

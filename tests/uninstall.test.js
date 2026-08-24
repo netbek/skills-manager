@@ -51,7 +51,7 @@ function makeInstalledFixture() {
   );
   writeConfig(
     sandbox,
-    'node_modules/.skills-sync.checksum',
+    'node_modules/.skills-manager.checksum',
     'deadbeef\ndeadbeef\n'
   );
   writeConfig(sandbox, 'skills-lock.json', '{}\n');
@@ -76,7 +76,7 @@ test('uninstall removes ignored skills and links, spares committed ones, drops s
     existsSync(path.join(sandbox, '.claude', 'skills', 'dangling-link'))
   ).toBe(false);
   expect(
-    existsSync(path.join(sandbox, 'node_modules', '.skills-sync.checksum'))
+    existsSync(path.join(sandbox, 'node_modules', '.skills-manager.checksum'))
   ).toBe(false);
   expect(existsSync(path.join(sandbox, 'skills-lock.json'))).toBe(false);
 
@@ -102,7 +102,7 @@ test('uninstall outside a git work tree refuses to remove anything', () => {
     '../.agents/skills/keep',
     path.join(sandbox, '.claude', 'skills-link')
   );
-  writeConfig(sandbox, 'node_modules/.skills-sync.checksum', 'hash\nhash\n');
+  writeConfig(sandbox, 'node_modules/.skills-manager.checksum', 'hash\nhash\n');
   writeConfig(sandbox, 'skills-lock.json', '{}\n');
 
   const {status, stderr} = run(['--root', sandbox, 'uninstall']);
@@ -116,7 +116,7 @@ test('uninstall outside a git work tree refuses to remove anything', () => {
   ).toBe(true);
   expect(existsSync(path.join(sandbox, '.claude', 'skills-link'))).toBe(true);
   expect(
-    existsSync(path.join(sandbox, 'node_modules', '.skills-sync.checksum'))
+    existsSync(path.join(sandbox, 'node_modules', '.skills-manager.checksum'))
   ).toBe(true);
   expect(existsSync(path.join(sandbox, 'skills-lock.json'))).toBe(true);
 });
@@ -124,5 +124,5 @@ test('uninstall outside a git work tree refuses to remove anything', () => {
 test('uninstall still requires a config file', () => {
   const {status, stderr} = run(['--root', sandbox, 'uninstall']);
   expect(status).toBe(1);
-  expect(stderr).toBe(`error: no config at ${sandbox}/skills-sync.yaml\n`);
+  expect(stderr).toBe(`error: no config at ${sandbox}/skills-manager.yaml\n`);
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@netbek/skills-sync",
+  "name": "@netbek/skills-manager",
   "version": "0.1.5",
   "description": "Install and uninstall third-party agent skills from a declarative config",
   "author": {
@@ -10,7 +10,7 @@
   "license": "AGPL-3.0",
   "type": "module",
   "bin": {
-    "skills-sync": "bin/skills-sync.js"
+    "skills-manager": "bin/skills-manager.js"
   },
   "files": [
     "bin",

@@ -16,10 +16,10 @@ export const REPO_ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '..'
 );
-export const REPO_CLI = path.join(REPO_ROOT, 'bin', 'skills-sync.js');
+export const REPO_CLI = path.join(REPO_ROOT, 'bin', 'skills-manager.js');
 
 export function makeSandbox() {
-  return mkdtempSync(path.join(os.tmpdir(), 'skills-sync-test-'));
+  return mkdtempSync(path.join(os.tmpdir(), 'skills-manager-test-'));
 }
 
 export function removeSandbox(sandbox) {
@@ -51,7 +51,7 @@ export const DEFAULT_CONFIG = [
 ].join('\n');
 
 export function defaultConfig(sandbox) {
-  writeConfig(sandbox, 'skills-sync.yaml', DEFAULT_CONFIG);
+  writeConfig(sandbox, 'skills-manager.yaml', DEFAULT_CONFIG);
 }
 
 function runGit(args, cwd) {
@@ -164,7 +164,7 @@ export function copyCliIntoSandbox(sandbox) {
     path.join(modulesDir, 'yaml'),
     'dir'
   );
-  return path.join(sandbox, 'bin', 'skills-sync.js');
+  return path.join(sandbox, 'bin', 'skills-manager.js');
 }
 
 export function runSync(sandbox, entry, args, extraEnv = {}) {

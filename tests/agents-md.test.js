@@ -16,7 +16,7 @@ beforeEach(() => {
   sandbox = makeSandbox();
   writeConfig(
     sandbox,
-    'skills-sync.yaml',
+    'skills-manager.yaml',
     ['skills-dirs:', '  - .agents/skills', ''].join('\n')
   );
 });

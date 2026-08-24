@@ -1,7 +1,7 @@
 import process from 'node:process';
 
 export const STARTER_CONFIG = [
-  '# Docs: https://github.com/netbek/skills-sync',
+  '# Docs: https://github.com/netbek/skills-manager',
   '',
   '# Agents receiving installs; each name is passed to the skills CLI as an -a flag:',
   'agents:',

@@ -2,10 +2,10 @@ import {afterEach, beforeEach, expect, test} from 'vitest';
 import {makeSandbox, removeSandbox, runSync, REPO_CLI} from './helpers.js';
 
 const USAGE_GOLDEN = [
-  'usage: skills-sync config',
-  '       skills-sync install [--force] [--config FILE] [--root DIR] [--checksum FILE]',
-  '       skills-sync uninstall [--config FILE] [--root DIR] [--checksum FILE]',
-  '       skills-sync agents-md [--config FILE] [--root DIR]',
+  'usage: skills-manager config',
+  '       skills-manager install [--force] [--config FILE] [--root DIR] [--checksum FILE]',
+  '       skills-manager uninstall [--config FILE] [--root DIR] [--checksum FILE]',
+  '       skills-manager agents-md [--config FILE] [--root DIR]',
   ''
 ].join('\n');
 
@@ -35,7 +35,7 @@ test('unknown command prints usage and exits 1', () => {
   const {status, stdout, stderr} = run(['deploy']);
   expect(status).toBe(1);
   expect(stdout).toBe('');
-  expect(stderr).toContain('usage: skills-sync config');
+  expect(stderr).toContain('usage: skills-manager config');
   expect(stderr).toBe(USAGE_GOLDEN);
 });
 

@@ -142,8 +142,8 @@ export function renderAgentsMd(cfg) {
 function projectProse(skillsDir) {
   return (
     'Load any skill below with the `skill` tool by name (e.g., `skill find-skills`), or read its `SKILL.md` directly ' +
-    `(e.g., \`read ${skillsDir}/find-skills/SKILL.md\`). If \`${skillsDir}/\` is empty, run \`npx skills-sync install\` ` +
-    'to populate it (see [skills-sync docs](https://github.com/netbek/skills-sync)).'
+    `(e.g., \`read ${skillsDir}/find-skills/SKILL.md\`). If \`${skillsDir}/\` is empty, run \`npx skills-manager install\` ` +
+    'to populate it (see [skills-manager docs](https://github.com/netbek/skills-manager)).'
   );
 }
 

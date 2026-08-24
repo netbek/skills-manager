@@ -63,7 +63,7 @@ export function install({force, cfg, checksumFile}) {
   const bin = findSkillsBin(process.cwd());
   if (!bin) {
     warn(
-      'warning: no skills binary here or beside skills-sync; install dependencies first'
+      'warning: no skills binary here or beside skills-manager; install dependencies first'
     );
     return 0;
   }
