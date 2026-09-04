@@ -28,7 +28,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@types/node": "^24",
+    "@types/node": "^26",
     "npm-check-updates": "^23.0.2",
     "oxlint": "^1",
     "vitest": "^4"
