@@ -31,6 +31,6 @@
     "@types/node": "^24",
     "npm-check-updates": "^23.0.2",
     "oxlint": "^1",
-    "vitest": "^4"
+    "vitest": "^5"
   }
 }
